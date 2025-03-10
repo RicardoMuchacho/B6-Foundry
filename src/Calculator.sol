@@ -28,7 +28,7 @@ contract Calculator {
     emit Operation("addition", n1, n2, result);
   }
   //2. Subtraction
-  function subtraction(uint256 n1, uint256 n2) external returns(uint256 _result) {
+  function substraction(uint256 n1, uint256 n2) external returns(uint256 _result) {
     _result = n1 - n2;
     result = _result;
 
