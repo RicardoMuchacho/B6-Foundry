@@ -4,6 +4,8 @@ pragma solidity >= 0.8.24;
 contract Calculator {
   uint256 public result;
   address public admin;
+  string private privateTest = "private test";
+
   constructor(uint256 _result){
     result = _result;
     admin = msg.sender;
@@ -43,9 +45,15 @@ contract Calculator {
   }
   //4. Division
   function division(uint256 n1, uint256 n2) external onlyAdmin returns(uint256 _result) {
+    if (n2 == 0) return 0;
+   
     _result = n1/ n2;
     result = _result;
 
     emit Operation("division", n1, n2, result);
+  }
+
+  function getPrivateString() external view returns(string memory) {
+    return privateTest;
   }
 }

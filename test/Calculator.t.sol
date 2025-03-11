@@ -64,5 +64,14 @@ contract CalculatorTest is Test {
     calculator.division(5, 0);
   }
 
+  // Private variable test
+  function test_privateString() public view {
+    string memory privateString = calculator.getPrivateString();
+    assert(keccak256(bytes(privateString)) == keccak256(bytes("private test")));
+  }
+
   // Fuzz Testing
+  function test_fuzzingDivision(uint256 n1, uint256 n2) public {
+    calculator.division(n1, n2);
+  }
 }

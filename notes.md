@@ -13,7 +13,7 @@ Testing:
 
 types of test: 
 -Unit: test unitario, input => expected output
--Fuzzing: makes multiple tests with random numbers, use to test edge cases
+-Fuzzing: random inputs, used to check edge cases
 
   
 function setUp() = executes before the code, contracts go here
