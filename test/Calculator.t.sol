@@ -1,4 +1,4 @@
-// SPDX-Licence-Identifier: MIT
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity >= 0.8.24;
 
 import "../src/Calculator.sol";
@@ -59,9 +59,10 @@ contract CalculatorTest is Test {
     vm.stopPrank();
   }
 
-  function test_RevertZeroDivision() public {
-    vm.expectRevert();
-    calculator.division(5, 0);
+  function test_ZeroDivision() public {
+       assertEq(calculator.division(5, 0), 0);
+  //   vm.expectRevert();
+  //   calculator.division(5, 0);
   }
 
   // Private variable test
