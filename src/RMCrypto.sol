@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract RMCrypto is ERC20, Ownable, ERC20Burnable {
     uint256 public fixedEthPrice = 1000; //1000 tokens for 1 eth
-    uint256 public initSupply = 1_000_000 * 10**decimals();
+    uint256 public initSupply = 1_000_000 * 10 ** decimals();
 
     constructor() ERC20("RickM Crypto", "RM") Ownable(msg.sender) {
-        _mint(msg.sender, 1000 * 10**decimals());
+        _mint(msg.sender, 1000 * 10 ** decimals());
         _mint(address(this), initSupply);
     }
     //variables

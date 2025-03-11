@@ -3,8 +3,8 @@
 pragma solidity >=0.8.24;
 
 import "../src/RMCrypto.sol";
-import {Test} from "forge-std/Test.sol";
-import {console} from "forge-std/console.sol";
+import { Test } from "forge-std/Test.sol";
+import { console } from "forge-std/console.sol";
 
 contract RMCryptoTest is Test {
     RMCrypto tokenRM;
@@ -18,14 +18,15 @@ contract RMCryptoTest is Test {
     }
 
     function test_tokenRMInitialized() public view {
-       assertEq(tokenRM.name(), "RickM Crypto");
-       assertEq(tokenRM.symbol(),"RM");
-       assertEq(tokenRM.balanceOf(address(tokenRM)), tokenRM.initSupply());
-       assertEq(tokenRM.balanceOf(owner), 1000*10**tokenRM.decimals());
+        assertEq(tokenRM.name(), "RickM Crypto");
+        assertEq(tokenRM.symbol(), "RM");
+        assertEq(tokenRM.balanceOf(address(tokenRM)), tokenRM.initSupply());
+        assertEq(tokenRM.balanceOf(owner), 1000 * 10 ** tokenRM.decimals());
     }
+
     function test_mintTokens() public {
         vm.startPrank(owner);
-        
+
         uint256 tokenAmount = 1 ether;
 
         tokenRM.mintTokens(tokenAmount);
@@ -42,7 +43,7 @@ contract RMCryptoTest is Test {
 
         tokenRM.burnTokens(1 ether);
         uint256 contractBalance = tokenRM.balanceOf(address(tokenRM));
-        assertEq(contractBalance, tokenRM.initSupply() - tokenAmount);  
+        assertEq(contractBalance, tokenRM.initSupply() - tokenAmount);
 
         vm.stopPrank();
     }
@@ -53,9 +54,9 @@ contract RMCryptoTest is Test {
 
         uint256 ethAmount = 2 ether;
         uint256 rmAmount = ethAmount * tokenRM.fixedEthPrice(); // 1 ETH = 1000 RM
-        tokenRM.buyTokens{value: ethAmount}();
+        tokenRM.buyTokens{ value: ethAmount }();
 
-        assertEq(tokenRM.balanceOf(randUser), rmAmount); 
+        assertEq(tokenRM.balanceOf(randUser), rmAmount);
         assertEq(tokenRM.balanceOf(address(tokenRM)), tokenRM.initSupply() - rmAmount);
 
         vm.stopPrank();
@@ -68,44 +69,45 @@ contract RMCryptoTest is Test {
         uint256 tokenAmount = tokenRM.initSupply() + 0.5 ether;
 
         vm.expectRevert();
-        tokenRM.buyTokens{value: tokenAmount}();
+        tokenRM.buyTokens{ value: tokenAmount }();
 
         vm.stopPrank();
     }
+
     function test_withdraw() public {
         uint256 tokenAmount = 2 ether;
         buyTokensForTest(tokenAmount);
         vm.startPrank(owner);
-        
+
         tokenRM.withdraw();
         assertEq(owner.balance, tokenAmount);
-        
+
         vm.stopPrank();
     }
 
     function test_revertNotOwnerWithdraw() public {
         vm.startPrank(randUser);
-        
+
         vm.expectRevert();
         tokenRM.withdraw();
-        
+
         vm.stopPrank();
     }
 
-    // Fuzz Testing 
+    // Fuzz Testing
     function test_FuzzBuyTokens(uint256 ethAmount) public {
         vm.assume(ethAmount > 0 && ethAmount < 100 ether);
         vm.deal(randUser, 100 ether);
 
         vm.startPrank(randUser);
-        
+
         buyTokensForTest(ethAmount);
-        
+
         vm.stopPrank();
     }
 
     // helpers
     function buyTokensForTest(uint256 amount) internal {
-       tokenRM.buyTokens{value: amount}();
+        tokenRM.buyTokens{ value: amount }();
     }
 }
